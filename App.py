@@ -6,14 +6,14 @@ st.set_page_config(page_title="Goal Rush Pro", page_icon="⚽")
 st.title("GOAL RUSH PRO")
 st.write("xG + Goals Model | Over 1.5, BTTS & Correct Score Predictions")
 
-# Mock data for demo (replace with FBref scraper later)
+# Mock data with home/away split (fixed keys)
 stats = {
-    'Bradford City': {'home_xg': 1.6, 'home_gf': 1.8, 'home_xga': 0.7},
-    'Lincoln City': {'away_xg': 0.7, 'away_gf': 0.9, 'away_xga': 0.8},
-    'Genoa': {'home_xg': 0.6, 'home_gf': 0.0, 'home_xga': 1.4},
-    'Cremonese': {'away_xg': 1.1, 'away_gf': 1.0, 'away_xga': 1.0},
-    'Leeds United': {'home_xg': 1.1, 'home_gf': 1.0, 'home_xga': 1.2},
-    'West Ham': {'away_xg': 0.7, 'away_gf': 0.75, 'away_xga': 1.8}
+    'Bradford City': {'home_xg': 1.6, 'home_gf': 1.8, 'home_xga': 0.7, 'away_xga': 1.0},
+    'Lincoln City': {'away_xg': 0.7, 'away_gf': 0.9, 'home_xga': 0.8, 'away_xga': 1.0},
+    'Genoa': {'home_xg': 0.6, 'home_gf': 0.0, 'home_xga': 1.4, 'away_xga': 1.0},
+    'Cremonese': {'away_xg': 1.1, 'away_gf': 1.0, 'home_xga': 1.0, 'away_xga': 1.0},
+    'Leeds United': {'home_xg': 1.1, 'home_gf': 1.0, 'home_xga': 1.2, 'away_xga': 1.5},
+    'West Ham': {'away_xg': 0.7, 'away_gf': 0.75, 'home_xga': 1.8, 'away_xga': 2.0}
 }
 league_avg_xg = 1.3
 league_avg_gf = 1.15
@@ -22,7 +22,7 @@ def predict_match(home, away, odds=1.33):
     home_xg = stats[home]['home_xg']
     home_gf = stats[home]['home_gf']
     away_xga = stats[away]['away_xga']
-    away_ga = stats[away]['away_xga']  # Use xga as proxy for ga
+    away_ga = stats[away]['away_xga']  # Using xga as proxy for ga
     
     lambda_home_xg = (home_xg / league_avg_xg) * away_xga * league_avg_xg
     lambda_home_gf = (home_gf / league_avg_gf) * away_ga * league_avg_gf
@@ -93,5 +93,5 @@ for home, away, league in matches:
         else:
             st.info("No value — pass.")
 
-st.markdown("---")
+st.write("---")
 st.caption("Built with Goal Rush Pro | Data: Mock (Add FBref scraper next)")
